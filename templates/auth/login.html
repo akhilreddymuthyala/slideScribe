@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Sign in — SlideScribe{% endblock %}
+
+{% block content %}
+<div class="ss-auth">
+
+  <div class="ss-auth__panel">
+    <div class="ss-auth__panel-bg"></div>
+    <div class="ss-auth__panel-content">
+      <div style="margin-bottom:32px;">
+        <a href="{% url 'landing' %}" class="ss-auth__logo" style="justify-content:center;">
+          <div class="ss-auth__logo-mark">S</div>
+          <span class="ss-auth__logo-text" style="color:var(--parchment-50);">SlideScribe</span>
+        </a>
+      </div>
+      <h2 class="ss-auth__panel-title">Welcome back to<br>SlideScribe</h2>
+      <p class="ss-auth__panel-sub">Your AI-powered presentation copilot. Pick up where you left off.</p>
+      <div class="ss-auth__decoration" style="margin-top:40px;">
+        <div class="ss-auth__deco-card">
+          <div class="ss-auth__deco-icon">🎤</div>
+          <div class="ss-auth__deco-text">
+            <strong>Speaker notes</strong>
+            Know exactly what to say on every slide
+          </div>
+        </div>
+        <div class="ss-auth__deco-card">
+          <div class="ss-auth__deco-icon">❓</div>
+          <div class="ss-auth__deco-text">
+            <strong>Viva prep</strong>
+            Anticipate every tough question
+          </div>
+        </div>
+        <div class="ss-auth__deco-card">
+          <div class="ss-auth__deco-icon">✏️</div>
+          <div class="ss-auth__deco-text">
+            <strong>Prompt editing</strong>
+            "Shorten slide 4" — done instantly
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ss-auth__form-panel">
+    <div class="ss-auth__form-wrap">
+      <a href="{% url 'landing' %}" class="ss-auth__logo">
+        <div class="ss-auth__logo-mark">S</div>
+        <span class="ss-auth__logo-text">SlideScribe</span>
+      </a>
+      <h1 class="ss-auth__heading">Sign in</h1>
+      <p class="ss-auth__sub">Continue to your workspace.</p>
+
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="ss-form-group">
+          <label class="ss-form-label" for="{{ form.username.id_for_label }}">Email address</label>
+          {{ form.username }}
+        </div>
+        <div class="ss-form-group">
+          <label class="ss-form-label" for="{{ form.password.id_for_label }}">Password</label>
+          {{ form.password }}
+        </div>
+        <button type="submit" class="ss-btn ss-btn--primary" style="width:100%;margin-top:8px;">
+          Sign in →
+        </button>
+      </form>
+
+      <p class="ss-auth__footer">
+        Don't have an account? <a href="{% url 'register' %}">Create one free</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

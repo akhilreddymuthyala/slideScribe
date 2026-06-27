@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: slidescribe
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "gunicorn slidescribe.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_NAME
+        value: slidescribe
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.12.0"

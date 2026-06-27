@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block title %}SlideScribe — AI Presentation Copilot{% endblock %}
+
+{% block content %}
+<div class="ss-landing">
+
+  <!-- NAV -->
+  <nav class="ss-nav">
+    <a href="{% url 'landing' %}" class="ss-nav__logo">
+      <div class="ss-nav__logo-mark">S</div>
+      <span class="ss-nav__logo-text">SlideScribe</span>
+    </a>
+    <div class="ss-nav__links">
+      <a href="#features" class="ss-nav__link">Features</a>
+      <a href="#how-it-works" class="ss-nav__link">How it works</a>
+      <a href="{% url 'login' %}" class="ss-btn ss-btn--ghost-light ss-btn--sm">Sign in</a>
+      <a href="{% url 'register' %}" class="ss-btn ss-btn--primary ss-btn--sm">Get started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="ss-hero">
+    <div class="ss-hero__bg"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:1100px;margin:0 auto;">
+
+      <div class="ss-hero__content animate-fade-up">
+        <div class="ss-hero__eyebrow">
+          <span class="ss-hero__eyebrow-dot"></span>
+          AI Presentation Copilot
+        </div>
+        <h1 class="ss-hero__title">
+          Turn your work into<br>
+          <span class="ss-hero__title-accent">presentation-ready decks</span>
+        </h1>
+        <p class="ss-hero__sub">
+          Upload a report, research paper, README or notes.
+          SlideScribe understands your content, audience, and purpose —
+          then builds the full deck, speaker notes, and viva Q&A.
+        </p>
+        <div class="ss-hero__cta">
+          <a href="{% url 'register' %}" class="ss-btn ss-btn--primary ss-btn--lg">
+            Start for free →
+          </a>
+          <a href="#how-it-works" class="ss-btn ss-btn--ghost-light ss-btn--lg">
+            See how it works
+          </a>
+        </div>
+      </div>
+
+      <!-- UI Mockup -->
+      <div class="ss-hero__mockup animate-fade-up animate-fade-up--delay-2">
+        <div class="ss-mockup-frame">
+          <div class="ss-mockup-bar">
+            <div class="ss-mockup-dot"></div>
+            <div class="ss-mockup-dot"></div>
+            <div class="ss-mockup-dot"></div>
+          </div>
+          <div class="ss-mockup-screen">
+            <div class="ss-mockup-sidebar">
+              <div class="ss-mockup-slide-thumb active"></div>
+              <div class="ss-mockup-slide-thumb"></div>
+              <div class="ss-mockup-slide-thumb"></div>
+              <div class="ss-mockup-slide-thumb"></div>
+              <div class="ss-mockup-slide-thumb"></div>
+            </div>
+            <div class="ss-mockup-main">
+              <div class="ss-mockup-slide-title"></div>
+              <div class="ss-mockup-slide-line"></div>
+              <div class="ss-mockup-slide-line"></div>
+              <div class="ss-mockup-slide-line"></div>
+              <div class="ss-mockup-slide-line"></div>
+            </div>
+            <div class="ss-mockup-right">
+              <div class="ss-mockup-panel">
+                <div class="ss-mockup-panel-label"></div>
+                <div class="ss-mockup-panel-line"></div>
+                <div class="ss-mockup-panel-line" style="width:75%"></div>
+              </div>
+              <div class="ss-mockup-panel">
+                <div class="ss-mockup-panel-label" style="background:rgba(82,183,136,0.6)"></div>
+                <div class="ss-mockup-panel-line"></div>
+                <div class="ss-mockup-panel-line" style="width:80%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="ss-section ss-section--light" id="features">
+    <p class="ss-section__eyebrow">What you get</p>
+    <h2 class="ss-section__title">Everything for your presentation</h2>
+    <div class="ss-features">
+      <div class="ss-feature-card">
+        <div class="ss-feature-icon">📄</div>
+        <h3 class="ss-feature-title">Multi-format upload</h3>
+        <p class="ss-feature-desc">Upload PDF, DOCX, README.md, or paste raw notes. The parser extracts headings, sections, and content automatically.</p>
+      </div>
+      <div class="ss-feature-card">
+        <div class="ss-feature-icon">🎯</div>
+        <h3 class="ss-feature-title">Audience-aware generation</h3>
+        <p class="ss-feature-desc">Tell it your audience — Professor, Investor, HR, Engineers — and the tone, depth, and vocabulary adapt accordingly.</p>
+      </div>
+      <div class="ss-feature-card">
+        <div class="ss-feature-icon">🗂️</div>
+        <h3 class="ss-feature-title">Smart narrative structure</h3>
+        <p class="ss-feature-desc">Detects Project Viva, Startup Pitch, Research Seminar, or Interview deck and builds the right outline automatically.</p>
+      </div>
+      <div class="ss-feature-card">
+        <div class="ss-feature-icon">🎤</div>
+        <h3 class="ss-feature-title">Speaker notes per slide</h3>
+        <p class="ss-feature-desc">Full delivery scripts generated for every slide. Know exactly what to say, not just what to show.</p>
+      </div>
+      <div class="ss-feature-card">
+        <div class="ss-feature-icon">❓</div>
+        <h3 class="ss-feature-title">Viva Q&amp;A preparation</h3>
+        <p class="ss-feature-desc">Anticipate technical, design, and scope questions with AI-suggested answers grounded in your content.</p>
+      </div>
+      <div class="ss-feature-card">
+        <div class="ss-feature-icon">📥</div>
+        <h3 class="ss-feature-title">PPTX export</h3>
+        <p class="ss-feature-desc">Download a real .pptx file with slides, bullets, and embedded speaker notes — ready to open in PowerPoint.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="ss-section ss-section--dark" id="how-it-works">
+    <p class="ss-section__eyebrow">The process</p>
+    <h2 class="ss-section__title">From raw content to polished deck</h2>
+    <div class="ss-steps">
+      <div class="ss-step">
+        <div class="ss-step__number">1</div>
+        <h3 class="ss-step__title">Upload your content</h3>
+        <p class="ss-step__desc">PDF, DOCX, README, or paste notes</p>
+      </div>
+      <div class="ss-step">
+        <div class="ss-step__number">2</div>
+        <h3 class="ss-step__title">Set context</h3>
+        <p class="ss-step__desc">Choose presentation type and target audience</p>
+      </div>
+      <div class="ss-step">
+        <div class="ss-step__number">3</div>
+        <h3 class="ss-step__title">AI builds the deck</h3>
+        <p class="ss-step__desc">Outline, slides, notes, and Q&amp;A generated</p>
+      </div>
+      <div class="ss-step">
+        <div class="ss-step__number">4</div>
+        <h3 class="ss-step__title">Edit with prompts</h3>
+        <p class="ss-step__desc">"Make slide 3 shorter" — AI updates instantly</p>
+      </div>
+      <div class="ss-step">
+        <div class="ss-step__number">5</div>
+        <h3 class="ss-step__title">Export &amp; present</h3>
+        <p class="ss-step__desc">Download PPTX, walk in confident</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRESENTATION TYPES -->
+  <section class="ss-section ss-section--light">
+    <p class="ss-section__eyebrow">Presentation types</p>
+    <h2 class="ss-section__title">Built for every context</h2>
+    <div class="ss-features" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+      {% for type, label in types %}
+      <div class="ss-feature-card" style="padding:24px;text-align:center;">
+        <h3 class="ss-feature-title" style="font-size:16px;margin-bottom:0;">{{ label }}</h3>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="ss-cta-section">
+    <h2 class="ss-cta-title">Ready to present with confidence?</h2>
+    <p class="ss-cta-sub">Upload your first document. Free to start.</p>
+    <a href="{% url 'register' %}" class="ss-btn ss-btn--primary ss-btn--lg" style="position:relative;">
+      Create your first deck →
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="ss-footer">
+    <span class="ss-footer__copy">© 2025 SlideScribe. Built with AI.</span>
+    <div style="display:flex;gap:20px;">
+      <a href="{% url 'login' %}" style="font-size:13px;color:rgba(253,248,240,0.35);text-decoration:none;">Sign in</a>
+      <a href="{% url 'register' %}" style="font-size:13px;color:rgba(253,248,240,0.35);text-decoration:none;">Register</a>
+    </div>
+  </footer>
+
+</div>
+{% endblock %}

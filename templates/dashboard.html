@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — SlideScribe{% endblock %}
+
+{% block content %}
+<nav class="ss-dash-nav">
+  <a href="{% url 'dashboard' %}" class="ss-dash-nav__logo">
+    <div class="ss-dash-nav__logo-mark">S</div>
+    <span class="ss-dash-nav__logo-text">SlideScribe</span>
+  </a>
+  <div class="ss-dash-nav__right">
+    <a href="{% url 'logout' %}" class="ss-btn ss-btn--ghost ss-btn--sm">Sign out</a>
+    <span class="ss-avatar">
+      {{ user.avatar_initials|default:user.email|slice:":2"|upper }}
+    </span>
+  </div>
+</nav>
+
+<div class="ss-dashboard">
+  <div class="ss-dash-content">
+
+    <div class="ss-dash-header">
+      <p class="ss-dash-header__greeting">Good to see you</p>
+      <h1 class="ss-dash-header__title">
+        {{ user.full_name|default:user.email }}'s workspace
+      </h1>
+    </div>
+
+    <div class="ss-stats">
+      <div class="ss-stat-card">
+        <div class="ss-stat-card__label">Total decks</div>
+        <div class="ss-stat-card__value">{{ total }}</div>
+        <div class="ss-stat-card__sub">presentations created</div>
+      </div>
+      <div class="ss-stat-card">
+        <div class="ss-stat-card__label">Ready</div>
+        <div class="ss-stat-card__value">{{ ready }}</div>
+        <div class="ss-stat-card__sub">fully generated</div>
+      </div>
+      <div class="ss-stat-card">
+        <div class="ss-stat-card__label">This month</div>
+        <div class="ss-stat-card__value">{{ total }}</div>
+        <div class="ss-stat-card__sub">decks started</div>
+      </div>
+    </div>
+
+    <div class="ss-new-card">
+      <div class="ss-new-card__content">
+        <h2 class="ss-new-card__title">Create a new presentation</h2>
+        <p class="ss-new-card__sub">Upload a document and let SlideScribe build your deck</p>
+      </div>
+      <a href="#" class="ss-btn ss-btn--primary ss-btn--lg">
+        + New presentation
+      </a>
+    </div>
+
+    <h2 class="ss-section-title">Recent presentations</h2>
+
+    {% if recent %}
+    <div class="ss-presentations-grid">
+      {% for pres in recent %}
+      <a href="#" class="ss-pres-card">
+        <div class="ss-pres-card__thumb">
+          <div class="ss-pres-card__thumb-lines">
+            <div class="ss-pres-card__thumb-line"></div>
+            <div class="ss-pres-card__thumb-line"></div>
+            <div class="ss-pres-card__thumb-line"></div>
+          </div>
+          {% if pres.presentation_type %}
+          <div class="ss-pres-card__type-badge">{{ pres.get_presentation_type_display }}</div>
+          {% endif %}
+        </div>
+        <div class="ss-pres-card__title" title="{{ pres.title }}">{{ pres.title }}</div>
+        <div class="ss-pres-card__meta">
+          <span class="ss-pres-card__status ss-status--{{ pres.status }}">
+            <span class="ss-status-dot"></span>
+            {{ pres.get_status_display }}
+          </span>
+          <span>·</span>
+          <span>{{ pres.created_at|date:"M j, Y" }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="ss-empty">
+      <div class="ss-empty__icon">🗂️</div>
+      <h3 class="ss-empty__title">No presentations yet</h3>
+      <p class="ss-empty__sub">Upload a document to create your first AI-powered deck</p>
+      <a href="#" class="ss-btn ss-btn--primary">+ Create first presentation</a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
