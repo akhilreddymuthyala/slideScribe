@@ -21,14 +21,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'users',
     'presentations',
-    'parser_engine',
-    'classifier_engine',
-    'audience_engine',
-    'narrative_engine',
-    'slide_engine',
-    'speaker_engine',
-    'viva_engine',
-    'export_engine',
+    # 'parser_engine',
+    # 'classifier_engine',
+    # 'audience_engine',
+    # 'narrative_engine',
+    # 'slide_engine',
+    # 'speaker_engine',
+    # 'viva_engine',
+    # 'export_engine',
 ]
 
 MIDDLEWARE = [
