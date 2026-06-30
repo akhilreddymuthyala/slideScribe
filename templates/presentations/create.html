@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}New Presentation — SlideScribe{% endblock %}
+
+{% block content %}
+<nav class="ss-dash-nav">
+  <a href="{% url 'dashboard' %}" class="ss-dash-nav__logo">
+    <div class="ss-dash-nav__logo-mark">S</div>
+    <span class="ss-dash-nav__logo-text">SlideScribe</span>
+  </a>
+  <div class="ss-dash-nav__right">
+    <a href="{% url 'dashboard' %}" class="ss-btn ss-btn--ghost ss-btn--sm">← Dashboard</a>
+    <span class="ss-avatar">{{ user.avatar_initials|default:user.email|slice:":2"|upper }}</span>
+  </div>
+</nav>
+
+<div class="ss-dashboard">
+  <div class="ss-dash-content" style="max-width:760px;">
+
+    <div class="ss-dash-header">
+      <p class="ss-dash-header__greeting">Step 1 of 4</p>
+      <h1 class="ss-dash-header__title">Create a new presentation</h1>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" id="upload-form">
+      {% csrf_token %}
+
+      <div class="ss-card" style="padding:28px;margin-bottom:20px;">
+        <label class="ss-form-label">Presentation title <span style="color:var(--ink-300);font-weight:400;">(optional — auto-detected if left blank)</span></label>
+        {{ form.title }}
+      </div>
+
+      <div class="ss-card" style="padding:28px;margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div>
+          <label class="ss-form-label">Presentation type <span style="color:var(--ink-300);font-weight:400;">(or let AI detect)</span></label>
+          {{ form.presentation_type }}
+        </div>
+        <div>
+          <label class="ss-form-label">Target audience</label>
+          {{ form.audience }}
+        </div>
+      </div>
+
+      <div class="ss-card" style="padding:28px;margin-bottom:20px;">
+        <label class="ss-form-label">Upload your document</label>
+
+        <div class="ss-dropzone" id="dropzone">
+          <input type="file" name="uploaded_file" id="file-input" accept=".pdf,.docx,.md,.markdown,.txt" hidden>
+          <div class="ss-dropzone__icon">📄</div>
+          <div class="ss-dropzone__text">
+            <strong>Drag &amp; drop</strong> a file here, or <span class="ss-dropzone__browse">browse</span>
+          </div>
+          <div class="ss-dropzone__sub">PDF, DOCX, README.md, or TXT — up to 20MB</div>
+          <div class="ss-dropzone__filename" id="filename-display"></div>
+        </div>
+
+        <div class="ss-divider">or paste raw notes</div>
+
+        {{ form.raw_text }}
+      </div>
+
+      <button type="submit" class="ss-btn ss-btn--primary ss-btn--lg" style="width:100%;" id="submit-btn">
+        <span id="submit-text">Parse &amp; continue →</span>
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<div class="ss-loading-overlay" id="loading-overlay">
+  <div class="ss-loading-card">
+    <div class="ss-loading-spinner"></div>
+    <div class="ss-loading-title">Parsing your document</div>
+    <div class="ss-loading-sub" id="loading-sub">Extracting headings and structure...</div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('file-input');
+const filenameDisplay = document.getElementById('filename-display');
+const form = document.getElementById('upload-form');
+const overlay = document.getElementById('loading-overlay');
+const loadingSub = document.getElementById('loading-sub');
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('ss-dropzone--active'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('ss-dropzone--active'));
+dropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropzone.classList.remove('ss-dropzone--active');
+  if (e.dataTransfer.files.length) {
+    fileInput.files = e.dataTransfer.files;
+    showFilename(e.dataTransfer.files[0].name);
+  }
+});
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) showFilename(fileInput.files[0].name);
+});
+function showFilename(name) {
+  filenameDisplay.textContent = '📎 ' + name;
+  filenameDisplay.style.display = 'block';
+}
+
+const messages = ['Extracting headings and structure...', 'Cleaning up the text...', 'Identifying sections...', 'Almost done...'];
+let msgIndex = 0;
+form.addEventListener('submit', () => {
+  overlay.classList.add('ss-loading-overlay--visible');
+  setInterval(() => {
+    msgIndex = (msgIndex + 1) % messages.length;
+    loadingSub.textContent = messages[msgIndex];
+  }, 1400);
+});
+</script>
+{% endblock %}

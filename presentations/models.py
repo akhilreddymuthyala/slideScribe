@@ -60,3 +60,11 @@ class Presentation(models.Model):
 
     def slide_count(self):
         return len(self.slides_data) if self.slides_data else 0
+    def slide_count(self):
+        return len(self.slides_data) if self.slides_data else 0
+
+    def section_count(self):
+        return len(self.parsed_content.get('sections', [])) if self.parsed_content else 0
+
+    def word_count(self):
+        return self.parsed_content.get('word_count', 0) if self.parsed_content else 0

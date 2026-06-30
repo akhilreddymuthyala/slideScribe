@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}{{ presentation.title }} — SlideScribe{% endblock %}
+
+{% block content %}
+<nav class="ss-dash-nav">
+  <a href="{% url 'dashboard' %}" class="ss-dash-nav__logo">
+    <div class="ss-dash-nav__logo-mark">S</div>
+    <span class="ss-dash-nav__logo-text">SlideScribe</span>
+  </a>
+  <div class="ss-dash-nav__right">
+    <a href="{% url 'dashboard' %}" class="ss-btn ss-btn--ghost ss-btn--sm">← Dashboard</a>
+    <span class="ss-avatar">{{ user.avatar_initials|default:user.email|slice:":2"|upper }}</span>
+  </div>
+</nav>
+
+<div class="ss-dashboard">
+  <div class="ss-dash-content">
+
+    <div class="ss-dash-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div>
+        <p class="ss-dash-header__greeting">
+          <span class="ss-pres-card__status ss-status--{{ presentation.status }}">
+            <span class="ss-status-dot"></span>
+            {{ presentation.get_status_display }}
+          </span>
+        </p>
+        <h1 class="ss-dash-header__title">{{ presentation.title }}</h1>
+      </div>
+      <form method="post" action="{% url 'delete_presentation' presentation.pk %}" onsubmit="return confirm('Delete this presentation permanently?');">
+        {% csrf_token %}
+        <button type="submit" class="ss-btn ss-btn--ghost ss-btn--sm">🗑 Delete</button>
+      </form>
+    </div>
+
+    {% if presentation.status == 'ERROR' %}
+    <div class="ss-card" style="padding:32px;text-align:center;margin-bottom:24px;">
+      <div style="font-size:32px;margin-bottom:12px;">⚠️</div>
+      <h3 class="ss-feature-title">Parsing failed</h3>
+      <p class="ss-feature-desc">Something went wrong reading this document. Try re-uploading or pasting raw text instead.</p>
+      <a href="{% url 'create_presentation' %}" class="ss-btn ss-btn--primary" style="margin-top:16px;">Try again</a>
+    </div>
+
+    {% elif presentation.parsed_content %}
+
+    <div class="ss-stats">
+      <div class="ss-stat-card">
+        <div class="ss-stat-card__label">Sections found</div>
+        <div class="ss-stat-card__value">{{ presentation.section_count }}</div>
+        <div class="ss-stat-card__sub">structured blocks</div>
+      </div>
+      <div class="ss-stat-card">
+        <div class="ss-stat-card__label">Word count</div>
+        <div class="ss-stat-card__value">{{ presentation.word_count }}</div>
+        <div class="ss-stat-card__sub">extracted words</div>
+      </div>
+      <div class="ss-stat-card">
+        <div class="ss-stat-card__label">Source type</div>
+        <div class="ss-stat-card__value" style="font-size:20px;text-transform:uppercase;">{{ presentation.parsed_content.source_type }}</div>
+        <div class="ss-stat-card__sub">document format</div>
+      </div>
+    </div>
+
+    <div class="ss-new-card">
+      <div class="ss-new-card__content">
+        <h2 class="ss-new-card__title">Content parsed successfully</h2>
+        <p class="ss-new-card__sub">Next: classify presentation type, adapt to audience, and generate your deck</p>
+      </div>
+      <button class="ss-btn ss-btn--primary ss-btn--lg" disabled style="opacity:0.5;cursor:not-allowed;" title="Coming in Phase 3">
+        Generate deck →
+      </button>
+    </div>
+
+    <h2 class="ss-section-title">Parsed sections</h2>
+    <div class="ss-sections-list">
+      {% for section in presentation.parsed_content.sections %}
+      <div class="ss-card ss-parsed-section">
+        <div class="ss-parsed-section__header">
+          <span class="ss-parsed-section__index">{{ forloop.counter }}</span>
+          <h3 class="ss-parsed-section__heading">{{ section.heading }}</h3>
+        </div>
+        <p class="ss-parsed-section__content">{{ section.content|truncatewords:60 }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="ss-empty">
+      <div class="ss-empty__icon">⏳</div>
+      <h3 class="ss-empty__title">Processing...</h3>
+      <p class="ss-empty__sub">This document is still being parsed.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
